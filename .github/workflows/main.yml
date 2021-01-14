@@ -30,7 +30,7 @@ jobs:
     runs-on: macos-latest # ジョブを実行するマシーンの種類
 
     steps: #一連のタスク
-    
+
       # チェックアウト
       - name: Checks-out my repository 
         uses: actions/checkout@v2
@@ -57,8 +57,8 @@ jobs:
       - name: Import Provisioning Profile
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          touch ~/Library/MobileDevice/Provisioning\ Profiles/sample_dist.mobileprovision
-          echo -n '${{ secrets.PROVISIONING_PROFILE }}' | base64 -d -o ~/Library/MobileDevice/Provisioning\ Profiles/sample_dist.mobileprovision
+          touch ~/Library/MobileDevice/Provisioning\ Profiles/distribution.mobileprovision
+          echo -n '${{ secrets.PROVISIONING_PROFILE }}' | base64 -d -o ~/Library/MobileDevice/Provisioning\ Profiles/sadistributionmple_dist.mobileprovision
     
       # 署名をする
       - name: Import Code-Signing Certificates

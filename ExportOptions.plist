@@ -9,7 +9,7 @@
 	<key>provisioningProfiles</key>
 	<dict>
 		<key>github.actions.sample</key>
-		<string>sample_dist</string>
+		<string>distribution</string>
 	</dict>
 	<key>signingCertificate</key>
 	<string>Apple Distribution</string>
