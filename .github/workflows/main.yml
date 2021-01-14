@@ -38,7 +38,7 @@ jobs:
       - name: Install Flutter
         uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.26.0'
+          channel: 'beta'
       #   run: ./scripts/install_flutter.sh
       # - name: print FLUTTER_FULL_VERSION
       #   run: echo ${{ env.RELEASE_VERSION }} env.[] で変数にアクセスできる
