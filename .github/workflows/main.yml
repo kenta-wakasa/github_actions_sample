@@ -36,7 +36,7 @@ jobs:
       
       # Flutter のインストール
       - name: Install Flutter
-        uses: 
+        uses: subosito/flutter-action@v1
           with:
             flutter-version: '1.26.0'
       #   run: ./scripts/install_flutter.sh
