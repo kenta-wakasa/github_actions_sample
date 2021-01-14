@@ -37,7 +37,7 @@ jobs:
       #   run: echo ${{ env.RELEASE_VERSION }} env.[] で変数にアクセスできる
       - name: Download Flutter packages
         run: flutter pub get
-      # 証明書関CERTIFICATES_P12連のファイルを生成します
+      # 証明書関CERTIFICATES_P12連のファイルを生成します。
       - name: Import Provisioning Profile
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
