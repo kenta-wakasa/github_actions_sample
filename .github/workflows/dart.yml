@@ -35,7 +35,23 @@ jobs:
         run: ./scripts/install_flutter.sh
       # - name: print FLUTTER_FULL_VERSION
       #   run: echo ${{ env.RELEASE_VERSION }} env.[] で変数にアクセスできる
+      - name: Download Flutter packages
+        run: flutter pub get
+      # 証明書関CERTIFICATES_P12連のファイルを生成します
+      - name: Import Provisioning Profile
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          touch ~/Library/MobileDevice/Provisioning\ Profiles/decoded.mobileprovision
+          echo -n '${{ secrets.PROVISIONING_PROFILE }}' | base64 -d -o ~/Library/MobileDevice/Provisioning\ Profiles/decoded.mobileprovision
+    
+      # 署名をします
+      - name: Import Code-Signing Certificates
+        uses: Apple-Actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
+          p12-password: ${{ secrets.CERTIFICATE_PASSWORD }}
       
+      - run: flutter build ios
           
   # # This workflow contains a single job called "build"
   # build:
