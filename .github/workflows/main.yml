@@ -14,7 +14,7 @@ on:
     paths-ignore:
     # - 'FILE_NAME' # ここに列挙されたファイルがpushされても無視する
     - 'README.md'
-    - analysis_options.yaml
+    - 'analysis_options.yaml'
     - '.gitignore'
   # pull_request:
   #   branches: [ main ]
@@ -37,8 +37,8 @@ jobs:
       # Flutter のインストール
       - name: Install Flutter
         uses: subosito/flutter-action@v1
-          with:
-            flutter-version: '1.26.0'
+        with:
+          flutter-version: '1.26.0'
       #   run: ./scripts/install_flutter.sh
       # - name: print FLUTTER_FULL_VERSION
       #   run: echo ${{ env.RELEASE_VERSION }} env.[] で変数にアクセスできる
