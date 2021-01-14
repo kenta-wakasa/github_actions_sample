@@ -36,12 +36,18 @@ jobs:
       
       # Flutter のインストール
       - name: Install Flutter
-        uses: subosito/flutter-action@v1
-        with:
-          channel: 'beta'
+        run: | 
+          git clone https://github.com/flutter/flutter.git
+          flutter --version
+
       #   run: ./scripts/install_flutter.sh
       # - name: print FLUTTER_FULL_VERSION
       #   run: echo ${{ env.RELEASE_VERSION }} env.[] で変数にアクセスできる
+
+      # # パッケージを使う場合
+      # - uses: subosito/flutter-action@v1
+      #   with:
+      #     channel: 'beta'
 
       # パッケージのダウンロード
       - name: Download Flutter packages
