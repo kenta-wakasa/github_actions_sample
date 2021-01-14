@@ -36,7 +36,10 @@ jobs:
       
       # Flutter のインストール
       - name: Install Flutter
-        run: ./scripts/install_flutter.sh
+        uses: 
+          with:
+            flutter-version: '1.26.0'
+      #   run: ./scripts/install_flutter.sh
       # - name: print FLUTTER_FULL_VERSION
       #   run: echo ${{ env.RELEASE_VERSION }} env.[] で変数にアクセスできる
 
