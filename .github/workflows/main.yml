@@ -38,9 +38,9 @@ jobs:
       - name: Install Flutter
         run: | 
           git clone https://github.com/flutter/flutter.git
-      # PATH を通す
-      - name: add path
-        run: echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
+      # # PATH を通す
+      # - name: add path
+      #   run: echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
       
       # バージョン確認
       - run: flutter --version
