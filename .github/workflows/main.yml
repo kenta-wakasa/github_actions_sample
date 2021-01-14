@@ -25,39 +25,50 @@ jobs:
   # Build for iOS
   #
   build_iOS: # jobに名前をつけられる
-  
+
     name: Build for iOS # GitHubに表示されるジョブの名前
     runs-on: macos-latest # ジョブを実行するマシーンの種類
 
     steps: #一連のタスク
+      # チェックアウト
       - name: Checks-out my repository 
         uses: actions/checkout@v2
+      
+      # Flutter のインストール
       - name: Install Flutter
         run: ./scripts/install_flutter.sh
       # - name: print FLUTTER_FULL_VERSION
       #   run: echo ${{ env.RELEASE_VERSION }} env.[] で変数にアクセスできる
+
+      # パッケージのダウンロード
       - name: Download Flutter packages
         run: flutter pub get
 
-      # 証明書関CERTIFICATES_P12連のファイルを生成します。
+      # 証明書の生成
       - name: Import Provisioning Profile
         run: |
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          touch ~/Library/MobileDevice/Provisioning\ Profiles/sample_dist.mobileprovision
-          echo -n '${{ secrets.PROVISIONING_PROFILE }}' | base64 -d -o ~/Library/MobileDevice/Provisioning\ Profiles/sample_dist.mobileprovision
+          touch ~/Library/MobileDevice/Provisioning\ Profiles/distribution.mobileprovision
+          echo -n '${{ secrets.PROVISIONING_PROFILE }}' | base64 -d -o ~/Library/MobileDevice/Provisioning\ Profiles/distribution.mobileprovision
     
-      # 署名をします
+      # 署名をする
       - name: Import Code-Signing Certificates
         uses: Apple-Actions/import-codesign-certs@v1
         with:
           p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
           p12-password: ${{ secrets.CERTIFICATE_PASSWORD }}
       
+      # ipa ファイルの出力
       - name: flutter build ipa 
-        run: flutter build ipa --export-options-plist=ExportOptions.plist
-      - name: test
-        run: ls ./build/ios/ipa
-  # # This workflow contains a single job called "build"
+        # GITHUB_RUN_NUMBER をビルドナンバーに指定することで被りがないようにしている。
+        run: flutter build ipa --export-options-plist=ExportOptions.plist --build-number ${GITHUB_RUN_NUMBER}
+      
+      # AppStoreConnect にアップロードする
+      - name: Upload to AppStoreConnect
+        run: xcrun altool --upload-app -f "./build/ios/ipa/github_actios_sample.ipa" -u "${{ secrets.APPLE_ID }}" -p "${{ secrets.APPLE_APP_PASS }}" 
+  
+  
+        # # This workflow contains a single job called "build"
   # build:
   #   # The type of runner that the job will run on
   #   runs-on: ubuntu-latest
