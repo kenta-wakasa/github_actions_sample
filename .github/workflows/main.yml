@@ -30,6 +30,7 @@ jobs:
     runs-on: macos-latest # ジョブを実行するマシーンの種類
 
     steps: #一連のタスク
+    
       # チェックアウト
       - name: Checks-out my repository 
         uses: actions/checkout@v2
@@ -38,16 +39,10 @@ jobs:
       - name: Install Flutter
         run: | 
           git clone https://github.com/flutter/flutter.git
-      # # PATH を通す
-      # - name: add path
-      #   run: echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
-      
-      # バージョン確認
-      - run: flutter --version
 
-      #   run: ./scripts/install_flutter.sh
-      # - name: print FLUTTER_FULL_VERSION
-      #   run: echo ${{ env.RELEASE_VERSION }} env.[] で変数にアクセスできる
+      # PATH を通す
+      - name: Add path
+        run: echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
 
       # # パッケージを使う場合
       # - uses: subosito/flutter-action@v1
@@ -73,35 +68,14 @@ jobs:
           p12-password: ${{ secrets.CERTIFICATE_PASSWORD }}
       
       # ipa ファイルの出力
-      - name: flutter build ipa 
+      - name: Create ipa file
         # GITHUB_RUN_NUMBER をビルドナンバーに指定することで被りがないようにしている。
         run: flutter build ipa --export-options-plist=ExportOptions.plist --build-number ${GITHUB_RUN_NUMBER}
       
       # AppStoreConnect にアップロードする
       - name: Upload to AppStoreConnect
         run: xcrun altool --upload-app -f "./build/ios/ipa/github_actios_sample.ipa" -u "${{ secrets.APPLE_ID }}" -p "${{ secrets.APPLE_APP_PASS }}" 
-  
-  
-        # # This workflow contains a single job called "build"
-  # build:
-  #   # The type of runner that the job will run on
-  #   runs-on: ubuntu-latest
-
-  #   # Steps represent a sequence of tasks that will be executed as part of the job
-  #   steps:
-  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #     - uses: actions/checkout@v2
-
-  #     # Runs a single command using the runners shell
-  #     - name: Run a one-line script
-  #       run: echo Hello, world!
-
-  #     # Runs a set of commands using the runners shell
-  #     - name: Run a multi-line script
-  #       run: |
-  #         echo Add other actions to build,
-  #         echo test, and deploy your project.
-      
+        
   #     # Slackに通知を送る
   #     # 参考: https://spinners.work/posts/github-actions-context/
   #     - name: Send notification to slack
