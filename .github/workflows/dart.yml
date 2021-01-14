@@ -1,41 +1,67 @@
-name: Dart
+# GitHub Actionsのワークフロー構文
+# https://docs.github.com/ja/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
+
+# コンテキストおよび式の構文
+# https://docs.github.com/ja/free-pro-team@latest/actions/reference/context-and-expression-syntax-for-github-actions
+# 文字列ではなく式として判定する ${{ <expression> }}
+
+
+name: CI
 
 on:
+  # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    paths-ignore:
+    # - 'FILE_NAME' # ここに列挙されたファイルがpushされても無視する
+    - 'README.md'
+    - analysis_options.yaml
+    - '.gitignore'
+  # pull_request:
+  #   branches: [ main ]
+  workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  #
+  # Build for iOS
+  #
+  build_iOS: # jobに名前をつけられる
+    name: Build for iOS # GitHubに表示されるジョブの名前
+    runs-on: macos-latest # ジョブを実行するマシーンの種類
+    steps: #一連のタスク
+      - name: Checks-out my repository 
+        uses: actions/checkout@v2
+      - name: Install Flutter
+        run: ./scripts/install_flutter.sh
+      # - name: print FLUTTER_FULL_VERSION
+      #   run: echo ${{ env.RELEASE_VERSION }} env.[] で変数にアクセスできる
+      
+          
+  # # This workflow contains a single job called "build"
+  # build:
+  #   # The type of runner that the job will run on
+  #   runs-on: ubuntu-latest
 
-    # Note that this workflow uses the latest stable version of the Dart SDK.
-    # Docker images for other release channels - like dev and beta - are also
-    # available. See https://hub.docker.com/r/google/dart/ for the available
-    # images.
-    container:
-      image:  google/dart:latest
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+  #   steps:
+  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #     - uses: actions/checkout@v2
 
-    steps:
-      - uses: actions/checkout@v2
+  #     # Runs a single command using the runners shell
+  #     - name: Run a one-line script
+  #       run: echo Hello, world!
 
-      - name: Print Dart SDK version
-        run: dart --version
-
-      - name: Install dependencies
-        run: dart pub get
-
-      # Uncomment this step to verify the use of 'dart format' on each commit.
-      # - name: Verify formatting
-      #   run: dart format --output=none --set-exit-if-changed .
-
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
-      - name: Analyze project source
-        run: dart analyze
-
-      # Your project will need to have tests in test/ and a dependency on
-      # package:test for this step to succeed. Note that Flutter projects will
-      # want to change this to 'flutter test'.
-      - name: Run tests
-        run: dart test
+  #     # Runs a set of commands using the runners shell
+  #     - name: Run a multi-line script
+  #       run: |
+  #         echo Add other actions to build,
+  #         echo test, and deploy your project.
+      
+  #     # Slackに通知を送る
+  #     # 参考: https://spinners.work/posts/github-actions-context/
+  #     - name: Send notification to slack
+  #       uses: tokorom/action-slack-incoming-webhook@main
+  #       env:
+  #         INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  #       with:
+  #         text: Hello, Slack!
