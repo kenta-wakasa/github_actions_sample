@@ -35,16 +35,15 @@ jobs:
       - name: Checks-out my repository 
         uses: actions/checkout@v2
       
-      # Flutter のインストール
+      # Flutter のインストール clone がはやい
       - name: Install Flutter
-        run: | 
-          git clone https://github.com/flutter/flutter.git
+        run: git clone https://github.com/flutter/flutter.git
 
       # PATH を通す
       - name: Add path
         run: echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
 
-      # # パッケージを使う場合
+      # # マーケットプレイスの actions を使う場合
       # - uses: subosito/flutter-action@v1
       #   with:
       #     channel: 'beta'
