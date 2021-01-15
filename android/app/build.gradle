@@ -21,9 +21,15 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: "com.github.triplet.play" // <- 自動アップロードのためのパッケージ
+// apply plugin: 'com.android.application'
+// apply plugin: 'kotlin-android'
+// apply plugin: "com.github.triplet.play" // <- 自動アップロードのためのパッケージ
+plugins {
+    id("com.android.application")
+    id("com.github.triplet.play") version "3.2.0"
+}
+
+
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 // key.propertiesファイルの読み込み
