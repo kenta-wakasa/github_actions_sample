@@ -68,7 +68,7 @@ jobs:
       - name: Building Android AppBundle
         run: flutter build appbundle --build-number ${GITHUB_RUN_NUMBER}
 
-      # gradle-play-publisher で アップロード
+      # gradle-play-publisher で アップロード 権限を変更して再挑戦
       - name: Upload to GooglePlayStore
         run: ./gradlew publishReleaseBundle
         working-directory: ./android
