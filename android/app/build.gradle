@@ -66,7 +66,6 @@ android {
 
     // Google Play Console API を使ったアップロード
     play {
-       track = 'alpha' // alphaトラックへのアップロードを指定
        serviceAccountCredentials = rootProject.file(keystoreProperties['serviceAccountFile']) // jsonのパスを設定
    }
 }
