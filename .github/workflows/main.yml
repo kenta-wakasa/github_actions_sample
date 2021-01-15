@@ -60,8 +60,15 @@ jobs:
           cat android/key.properties
 
       # App Bundle を生成
-      - name: Building Android appbundle
+      - name: Building Android AppBundle
         run: flutter build appbundle --build-number ${GITHUB_RUN_NUMBER}
+      
+      # いったんダウンロードしたい
+      - name: Download AppBundle
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release.aab
+          path: ./build/app/outputs/bundle/release/app-release.aab
 
 # jobs:
 #   #
