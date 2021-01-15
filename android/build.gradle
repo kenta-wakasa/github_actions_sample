@@ -4,18 +4,22 @@ buildscript {
         google()
         jcenter()
         // ここを追加するといけた 
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
+        // maven {
+        //     url "https://plugins.gradle.org/m2/"
+        // }
         // たぶんプラグインの追加の仕方があまりわかっていない。
     }
 
     dependencies {
-        // classpath 'com.android.tools.build:gradle:4.1.0'
-        classpath 'com.android.tools.build:gradle:3.5.4'
+        classpath 'com.android.tools.build:gradle:4.1.0'
+        // classpath 'com.android.tools.build:gradle:3.5.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "com.github.triplet.gradle:play-publisher:2.6.0" // <- 自動ビルドのためのパッケージ
+        // classpath "com.github.triplet.gradle:play-publisher:2.6.0" // <- 自動ビルドのためのパッケージ
     }
+}
+
+plugins {
+    id("com.github.triplet.play") version "3.2.0"
 }
 
 allprojects {

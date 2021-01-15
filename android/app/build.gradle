@@ -67,7 +67,7 @@ android {
     // Google Play Console API を使ったアップロード
     play {
        serviceAccountCredentials = rootProject.file(keystoreProperties['serviceAccountFile']) // jsonのパスを設定
-   }
+    }
 }
 
 flutter {
