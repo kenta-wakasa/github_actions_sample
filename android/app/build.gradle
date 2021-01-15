@@ -25,6 +25,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+plugins {
+   id 'com.android.application'
+   id 'com.github.triplet.play' version '2.6.0'
+}
+
+
 // key.propertiesファイルの読み込み
 def keystorePropertiesFile = rootProject.file("key.properties")
 def keystoreProperties = new Properties()
@@ -46,7 +52,7 @@ android {
         versionName flutterVersionName
     }
 
-    //  追記・変更ここから
+    //  -- 追記・変更ここから ---------------------
     signingConfigs {
       release {
           keyAlias keystoreProperties['keyAlias']
@@ -61,8 +67,13 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    // -- ここまで ---------------------
 
-    // ここまで
+    // Google Play Console API を使ったアップロード
+    play {
+       track = 'alpha' // alphaトラックへのアップロードを指定
+       serviceAccountCredentials = rootProject.file(keystoreProperties['serviceAccountFile']) // jsonのパスを設定
+   }
 }
 
 flutter {

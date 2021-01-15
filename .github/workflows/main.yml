@@ -50,10 +50,15 @@ jobs:
       - name: Create release.jks
         run: echo -n ${{ secrets.ANDROID_KEY_JKS }} | base64 -d > android/release.jks
 
+      # Secrets から service-account-ke.json を生成
+      - name: Create release.jks
+        run: echo -n ${{ secrets.SERVICE_ACCOUNT_KEY_JSON }} | base64 -d > android/service-account-ke.json
+
       # Secrets から key.properties を生成
       - name: Create key.properties
         run: |
           echo 'storeFile=release.jks' > android/key.properties
+          echo 'serviceAccountFile=service-account-ke.json' >> android/key.properties
           echo 'storePassword=${{ secrets.ANDROID_STORE_PASSWORD }}' >> android/key.properties
           echo 'keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}' >> android/key.properties
           echo 'keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}' >> android/key.properties
@@ -62,13 +67,17 @@ jobs:
       # App Bundle を生成
       - name: Building Android AppBundle
         run: flutter build appbundle --build-number ${GITHUB_RUN_NUMBER}
+
+      # gradle-play-publisher で アップロード
+      - name: Upload to GooglePlayStore
+        run: ./gradlew publishReleaseBundle
       
-      # いったんダウンロードしたい
-      - name: Download AppBundle
-        uses: actions/upload-artifact@v2
-        with:
-          name: app-release.aab
-          path: ./build/app/outputs/bundle/release/app-release.aab
+      # # いったんダウンロードしたい
+      # - name: Download AppBundle
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: app-release.aab
+      #     path: ./build/app/outputs/bundle/release/app-release.aab
 
 # jobs:
 #   #
