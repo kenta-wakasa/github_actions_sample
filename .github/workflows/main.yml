@@ -61,7 +61,7 @@ jobs:
 
       # App Bundle を生成
       - name: Building Android appbundle
-        run: flutter build appbundle --build-number ${GITHUB_RUN_NUMBER} --verbose
+        run: flutter build appbundle --build-number ${GITHUB_RUN_NUMBER}
 
 # jobs:
 #   #
