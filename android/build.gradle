@@ -3,9 +3,11 @@ buildscript {
     repositories {
         google()
         jcenter()
+        // ここを追加するといけた 
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        // たぶんプラグインの追加の仕方があまりわかっていない。
     }
 
     dependencies {

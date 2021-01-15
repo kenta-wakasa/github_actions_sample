@@ -71,7 +71,8 @@ jobs:
       # gradle-play-publisher で アップロード
       - name: Upload to GooglePlayStore
         run: ./gradlew publishReleaseBundle
-      
+        working-directory: ./android
+
       # # いったんダウンロードしたい
       # - name: Download AppBundle
       #   uses: actions/upload-artifact@v2
