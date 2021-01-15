@@ -33,7 +33,7 @@ jobs:
 
       # Secrets からrelease.jks を生成
       - name: Create release.jks
-        run: echo -n "${{ secrets.ANDROID_KEY_JKS }}" | base64 -d > release.jks
+        run: echo -n ${{ secrets.ANDROID_KEY_JKS }} | base64 -d > release.jks
       # # チェックアウト
       # - name: Checks-out my repository 
       #   uses: actions/checkout@v2
