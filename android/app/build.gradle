@@ -25,12 +25,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-plugins {
-   id 'com.android.application'
-   id 'com.github.triplet.play' version '2.6.0'
-}
-
-
 // key.propertiesファイルの読み込み
 def keystorePropertiesFile = rootProject.file("key.properties")
 def keystoreProperties = new Properties()
