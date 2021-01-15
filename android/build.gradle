@@ -22,7 +22,6 @@ buildscript {
 }
 
 plugins {
-    id 'com.android.application'
     id 'com.github.triplet.play' version '3.2.0'
 }
 
