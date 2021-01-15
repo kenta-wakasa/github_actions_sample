@@ -44,22 +44,25 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+    }
 
-        // リリースのための追記
-        keyAlias keystoreProperties['keyAlias']
-        keyPassword keystoreProperties['keyPassword']
-        storeFile rootProject.file(keystoreProperties['storeFile'])
-        storePassword keystoreProperties['storePassword']
+    //  追記・変更ここから
+    signingConfigs {
+      release {
+          keyAlias keystoreProperties['keyAlias']
+          keyPassword keystoreProperties['keyPassword']
+          storeFile rootProject.file(keystoreProperties['storeFile'])
+          storePassword keystoreProperties['storePassword']
+      }
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            // signingConfig signingConfigs.debug
-            signingConfig signingConfigs.release // リリースのための追記
+            signingConfig signingConfigs.release
         }
     }
+
+    // ここまで
 }
 
 flutter {
