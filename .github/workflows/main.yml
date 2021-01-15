@@ -49,7 +49,7 @@ jobs:
 
       # Secrets からrelease.jks を生成
       - name: Create release.jks
-        run: echo ${{ secrets.ANDROID_KEY_JKS }} | base64 -d > android/release.jks
+        run: echo -n '${{ secrets.ANDROID_KEY_JKS }}' | base64 -d > android/release.jks
 
       # Secrets から key.properties を生成
       - name: Create key.properties
