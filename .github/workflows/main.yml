@@ -31,40 +31,39 @@ jobs:
 
     steps:
 
+
+      # チェックアウト
+      - name: Checks-out my repository 
+        uses: actions/checkout@v2
+
+      # Flutter のインストール clone がはやい
+      - name: Install Flutter
+        run: git clone https://github.com/flutter/flutter.git
+
+      # PATH を通す
+      - name: Add path
+        run: echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
+
+      # パッケージのダウンロード
+      - name: Download Flutter packages
+        run: flutter pub get
+
       # Secrets からrelease.jks を生成
       - name: Create release.jks
-        run: echo -n ${{ secrets.ANDROID_KEY_JKS }} | base64 -d > release.jks
-      # # チェックアウト
-      # - name: Checks-out my repository 
-      #   uses: actions/checkout@v2
+        run: echo -n ${{ secrets.ANDROID_KEY_JKS }} | base64 -d > android/release.jks
 
-      # # Flutter のインストール clone がはやい
-      # - name: Install Flutter
-      #   run: git clone https://github.com/flutter/flutter.git
+      # Secrets から key.properties を生成
+      - name: Create key.properties
+        run: |
+          echo 'storeFile=release.jks' > android/key.properties
+          echo 'storePassword=${{ secrets.ANDROID_STORE_PASSWORD }}' >> android/key.properties
+          echo 'keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}' >> android/key.properties
+          echo 'keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}' >> android/key.properties
+          cat android/key.properties
 
-      # # PATH を通す
-      # - name: Add path
-      #   run: echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
-
-      # # パッケージのダウンロード
-      # - name: Download Flutter packages
-      #   run: flutter pub get
-
-      # # Secrets からrelease.jks を生成
-      # - name: Create release.jks
-      #   run: echo -n '${{ secrets.ANDROID_KEY_JKS }}' | base64 -d > android/release.jks
-
-      # # Secrets から key.properties を生成
-      # - name: Create key.properties
-      #   run: |
-      #     echo 'storeFile=release.jks' > android/key.properties
-      #     echo 'storePassword=${{ secrets.ANDROID_STORE_PASSWORD }}' >> android/key.properties
-      #     echo 'keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}' >> android/key.properties
-      #     echo 'keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}' >> android/key.properties
-
-      # # App Bundle を生成
-      # - name: Building Android appbundle
-      #   run: flutter build appbundle --build-number ${GITHUB_RUN_NUMBER}--verbose
+      # App Bundle を生成
+      - name: Building Android appbundle
+        run: flutter build appbundle --build-number ${GITHUB_RUN_NUMBER}--verbose
 
 # jobs:
 #   #
