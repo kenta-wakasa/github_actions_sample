@@ -21,55 +21,55 @@ on:
   workflow_dispatch:
 
 jobs:
-    # ----------------------------------------------------------------- #
-    # Build for Android
-    # ----------------------------------------------------------------- #
-    build_Android:
-      runs-on: ubuntu-latest
-      timeout-minutes: 20
+  # ----------------------------------------------------------------- #
+  # Build for Android
+  # ----------------------------------------------------------------- #
+  build_Android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
 
-      steps:
-        # チェックアウト
-        - name: Checks-out my repository
-          uses: actions/checkout@v2
+    steps:
+      # チェックアウト
+      - name: Checks-out my repository
+        uses: actions/checkout@v2
 
-        # Flutter のインストール clone がはやい
-        - name: Install Flutter
-          run: git clone https://github.com/flutter/flutter.git
+      # Flutter のインストール clone がはやい
+      - name: Install Flutter
+        run: git clone https://github.com/flutter/flutter.git
 
-        # PATH を通す
-        - name: Add path
-          run: echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
+      # PATH を通す
+      - name: Add path
+        run: echo "$(pwd)/flutter/bin" >> $GITHUB_PATH
 
-        # パッケージのダウンロード
-        - name: Download Flutter packages
-          run: flutter pub get
+      # パッケージのダウンロード
+      - name: Download Flutter packages
+        run: flutter pub get
 
-        # Secrets からrelease.jks を生成
-        - name: Create release.jks
-          run: echo -n ${{ secrets.ANDROID_KEY_JKS }} | base64 -d > android/release.jks
+      # Secrets からrelease.jks を生成
+      - name: Create release.jks
+        run: echo -n ${{ secrets.ANDROID_KEY_JKS }} | base64 -d > android/release.jks
 
-        # Secrets から service-account-ke.json を生成
-        - name: Create release.jks
-          run: echo -n ${{ secrets.SERVICE_ACCOUNT_KEY_JSON }} | base64 -d > android/service-account-ke.json
+      # Secrets から service-account-ke.json を生成
+      - name: Create release.jks
+        run: echo -n ${{ secrets.SERVICE_ACCOUNT_KEY_JSON }} | base64 -d > android/service-account-ke.json
 
-        # Secrets から key.properties を生成
-        - name: Create key.properties
-          run: |
-            echo 'storeFile=release.jks' > android/key.properties
-            echo 'serviceAccountFile=service-account-ke.json' >> android/key.properties
-            echo 'storePassword=${{ secrets.ANDROID_STORE_PASSWORD }}' >> android/key.properties
-            echo 'keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}' >> android/key.properties
-            echo 'keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}' >> android/key.properties
+      # Secrets から key.properties を生成
+      - name: Create key.properties
+        run: |
+          echo 'storeFile=release.jks' > android/key.properties
+          echo 'serviceAccountFile=service-account-ke.json' >> android/key.properties
+          echo 'storePassword=${{ secrets.ANDROID_STORE_PASSWORD }}' >> android/key.properties
+          echo 'keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}' >> android/key.properties
+          echo 'keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}' >> android/key.properties
 
-        # App Bundle を生成
-        - name: Building Android AppBundle
-          run: flutter build appbundle --build-number ${GITHUB_RUN_NUMBER}
+      # App Bundle を生成
+      - name: Building Android AppBundle
+        run: flutter build appbundle --build-number ${GITHUB_RUN_NUMBER}
 
-        # gradle-play-publisher で アップロード 権限を変更して再挑戦 もっかい
-        - name: Upload to GooglePlayStore
-          run: ./gradlew publishReleaseBundle --artifact-dir ../build/app/outputs/bundle/release/app-release.aab
-          working-directory: ./android
+      # gradle-play-publisher で アップロード 権限を変更して再挑戦 もっかい
+      - name: Upload to GooglePlayStore
+        run: ./gradlew publishReleaseBundle --artifact-dir ../build/app/outputs/bundle/release/app-release.aab
+        working-directory: ./android
 
   #       # # いったんダウンロードしたい場合
   #       # - name: Download AppBundle
